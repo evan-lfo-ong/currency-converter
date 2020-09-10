@@ -51,12 +51,14 @@ export default class CurrencyConverter extends Component {
             (err, res, body) => {
                 if (!err && res.statusCode === 200) {
                     let parsedBody = JSON.parse(body);
-                    this.isInvalidBase = true;
+                    this.isInvalidBase = false;
                     fx.base = parsedBody.base;
                     fx.rates = parsedBody.rates;
                     this.validateTargetCurrency();
                 } else {
                     this.isInvalidBase = true;
+                    let msg = "Error: Cannot get rates for " + this.state.baseCurrency.name;
+                    alert(msg);
                     this.invalidOutput();
                 }
             });
@@ -67,7 +69,7 @@ export default class CurrencyConverter extends Component {
         let existRates = Object.keys(fx.rates);
         if (!existRates.includes(this.state.targetCurrency.code))
         {
-            console.log("Error: No rate conversion from " + this.state.baseCurrency.name + " to " + this.state.targetCurrency.name);
+            alert("Error: No rate conversion from " + this.state.baseCurrency.name + " to " + this.state.targetCurrency.name);
             this.invalidOutput();
         } else {
             // conversion rate exists
@@ -84,6 +86,8 @@ export default class CurrencyConverter extends Component {
             let displayVar = this.state.targetCurrency.symbol + " " + converted.toFixed(this.state.targetCurrency.decimal_digits);
             this.setState({outputDisplay: displayVar});
         } catch (err) {
+            let msg = "Error encountered in converting " + this.state.baseCurrency.name + " to " + this.state.targetCurrency.name;
+            alert(msg);
             this.invalidOutput();
         }
     }

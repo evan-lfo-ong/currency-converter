@@ -1,9 +1,55 @@
 import React, { Component } from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/CurrencyConverter.css";
+import SelectCurrency from "./SelectCurrency";
+
+const request = require('request');
+const curListUri = "https://gist.githubusercontent.com/mddenton/062fa4caf150bdf845994fc7a3533f74/raw/27beff3509eff0d2690e593336179d4ccda530c2/Common-Currency.json";
 
 export default class CurrencyConverter extends Component {
-    state = {};
+    constructor(props){
+        super(props);
+
+        this.onChangeBaseCurrency = this.onChangeBaseCurrency.bind(this);
+        this.onChangeTargetCurrency = this.onChangeTargetCurrency.bind(this);
+
+        this.state = {
+            currencyList: {},
+            baseCurrency: {},
+            targetCurrency: {}
+        }
+    }
+
+    componentDidMount() {
+        request.get(curListUri, (err, res, body) => {
+            if (!err && res.statusCode === 200) {
+                this.setState({
+                    currencyList: JSON.parse(body)
+                })
+                console.log("Currency List obtained from " + curListUri);
+                console.log(this.state.currencyList)
+            }
+        });
+    }
+
+    onChangeBaseCurrency(e) {
+        console.log("Base Currency Changed!");
+        console.log(e);
+    }
+
+    onChangeTargetCurrency(e) {
+        console.log("Target Currency Changed!");
+        console.log(e);
+    }
 
     render() {
-        return "hello world";
+        return (
+        <div className="container-fluid">
+            <div className="row top-pad"/>
+            <div className="row">
+                <SelectCurrency className="col text-center" labelName="Base" onChange={this.onChangeBaseCurrency} currencyList={this.state.currencyList}/>
+                <SelectCurrency className="col text-center" labelName="Target" onChange={this.onChangeTargetCurrency} currencyList={this.state.currencyList}/>
+            </div>
+        </div>);
     }
 }

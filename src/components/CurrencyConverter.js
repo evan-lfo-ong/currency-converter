@@ -32,8 +32,14 @@ export default class CurrencyConverter extends Component {
     }
 
     onChangeSelectedCurrency(changedCurrency, target) {
-        console.log(target + " Currency Changed!");
-        console.log(changedCurrency);
+        if (target === "Base")
+        {
+            this.setState({baseCurrency: changedCurrency});
+        }
+        else if (target === "Target")
+        {
+            this.setState({targetCurrency: changedCurrency});
+        }
     }
 
     render() {

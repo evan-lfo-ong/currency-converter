@@ -11,9 +11,7 @@ export default class SelectCurrency extends Component {
 
         this.currencyKeys = [];
 
-        this.state = {
-            
-        }
+        this.state = {}
     }
 
     onChange(e) {

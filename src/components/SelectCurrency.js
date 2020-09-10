@@ -30,7 +30,10 @@ export default class SelectCurrency extends Component {
         } catch (e){
             if (e !== BreakException) throw e;
         }
-        console.log(changedCurrency);
+        if (this.props.onChange && changedCurrency !== {} )
+        {
+            this.props.onChange(changedCurrency, this.props.labelName);
+        }
     }
     
     currencyOptions() {

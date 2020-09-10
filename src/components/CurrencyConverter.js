@@ -10,8 +10,7 @@ export default class CurrencyConverter extends Component {
     constructor(props){
         super(props);
 
-        this.onChangeBaseCurrency = this.onChangeBaseCurrency.bind(this);
-        this.onChangeTargetCurrency = this.onChangeTargetCurrency.bind(this);
+        this.onChangeSelectedCurrency = this.onChangeSelectedCurrency.bind(this);
 
         this.state = {
             currencyList: {},
@@ -32,14 +31,9 @@ export default class CurrencyConverter extends Component {
         });
     }
 
-    onChangeBaseCurrency(e) {
-        console.log("Base Currency Changed!");
-        console.log(e);
-    }
-
-    onChangeTargetCurrency(e) {
-        console.log("Target Currency Changed!");
-        console.log(e);
+    onChangeSelectedCurrency(changedCurrency, target) {
+        console.log(target + " Currency Changed!");
+        console.log(changedCurrency);
     }
 
     render() {
@@ -47,8 +41,8 @@ export default class CurrencyConverter extends Component {
         <div className="container-fluid">
             <div className="row top-pad"/>
             <div className="row">
-                <SelectCurrency className="col text-center" labelName="Base" onChange={this.onChangeBaseCurrency} currencyList={this.state.currencyList}/>
-                <SelectCurrency className="col text-center" labelName="Target" onChange={this.onChangeTargetCurrency} currencyList={this.state.currencyList}/>
+                <SelectCurrency className="col text-center" labelName="Base" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
+                <SelectCurrency className="col text-center" labelName="Target" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
             </div>
         </div>);
     }

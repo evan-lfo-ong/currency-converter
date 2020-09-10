@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/CurrencyConverter.css";
 import SelectCurrency from "./SelectCurrency";
+import InputCurrency from "./InputCurrency";
 
 const request = require('request');
 const curListUri = "https://gist.githubusercontent.com/mddenton/062fa4caf150bdf845994fc7a3533f74/raw/27beff3509eff0d2690e593336179d4ccda530c2/Common-Currency.json";
+const colTextCenter = "col text-center";
 
 export default class CurrencyConverter extends Component {
     constructor(props){
@@ -15,7 +17,7 @@ export default class CurrencyConverter extends Component {
         this.state = {
             currencyList: {},
             baseCurrency: {},
-            targetCurrency: {}
+            targetCurrency: {},
         }
     }
 
@@ -32,6 +34,7 @@ export default class CurrencyConverter extends Component {
     }
 
     onChangeSelectedCurrency(changedCurrency, target) {
+        console.log(target + " currency changed: " + changedCurrency.name);
         if (target === "Base")
         {
             this.setState({baseCurrency: changedCurrency});
@@ -47,8 +50,12 @@ export default class CurrencyConverter extends Component {
         <div className="container-fluid">
             <div className="row top-pad"/>
             <div className="row">
-                <SelectCurrency className="col text-center" labelName="Base" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
-                <SelectCurrency className="col text-center" labelName="Target" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
+                <SelectCurrency className={colTextCenter} labelName="Base" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
+                <SelectCurrency className={colTextCenter} labelName="Target" onChange={this.onChangeSelectedCurrency} currencyList={this.state.currencyList}/>
+            </div>
+            <div className="row">
+                <InputCurrency className={colTextCenter} symbol={this.state.baseCurrency.symbol}/>
+                <div className={colTextCenter}/>
             </div>
         </div>);
     }

@@ -15,18 +15,17 @@ export default class SelectCurrency extends Component {
     }
 
     onChange(e) {
-        let currencyKeys = Object.keys(this.props.currencyList);
         const BreakException = {};
         var changedCurrency = {};
         try {
-            currencyKeys.forEach(currency => {
+            this.currencyKeys.forEach(currency => {
                 if (this.props.currencyList[currency].name === e.target.value) {
                     changedCurrency = this.props.currencyList[currency];
                     throw BreakException;
                 }
             });
-        } catch (e){
-            if (e !== BreakException) throw e;
+        } catch (err){
+            if (err !== BreakException) throw err;
         }
         if (this.props.onChange && changedCurrency !== {} )
         {
@@ -36,11 +35,21 @@ export default class SelectCurrency extends Component {
     
     currencyOptions() {
         let returnValue = [];
-        let currencyKeys = Object.keys(this.props.currencyList);
-        currencyKeys.forEach(currency => {
+        this.currencyKeys.forEach(currency => {
             returnValue.push(<option key={currency}>{this.props.currencyList[currency].name}</option>)
         });
         return returnValue;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        let changedCurrency = {};
+        if (nextProps.currencyList !== this.props.currencyList) {
+            this.currencyKeys = Object.keys(nextProps.currencyList);
+            changedCurrency = nextProps.currencyList[this.currencyKeys[0]];
+            if (this.props.onChange && changedCurrency !== {}) {
+                this.props.onChange(changedCurrency, this.props.labelName);
+            }
+        }
     }
 
     render() {

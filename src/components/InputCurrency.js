@@ -15,7 +15,6 @@ export default class InputCurrency extends Component {
         super(props);
 
         this.updateDisplayValue = this.updateDisplayValue.bind(this);
-        this.onInputDisplayedChanged = this.onInputDisplayedChanged.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
 
         this.props = props;
@@ -27,8 +26,7 @@ export default class InputCurrency extends Component {
 
     updateDisplayValue() {
         let intVal = (this.state.numericValue * 0.01).toFixed(2);
-        let numVal = intVal === 0 ? "0.00" : intVal.toString();
-        let newValue =  this.props.symbol + " " + numVal;
+        let newValue =  this.props.symbol + " " + intVal;
         this.setState({ displayValue: newValue });
     }
 
@@ -44,11 +42,10 @@ export default class InputCurrency extends Component {
             this.setState({numericValue: newVal}, () => {
                 this.updateDisplayValue();
             });
+            if (this.props.onChange) {
+                this.props.onChange((newVal * 0.01).toFixed(2));
+            }
         }
-    }
-
-    onInputDisplayedChanged(e) {
-        console.log(e.target.value);
     }
 
     onKeyUp(e) {
@@ -91,8 +88,8 @@ export default class InputCurrency extends Component {
         return (
             <div className={this.props.className}>
                 <input type="text" className="form-control" 
+                    onChange={() => {} /* does nothing on change */}
                     value={this.state.displayValue} 
-                    onChange={this.onInputDisplayedChanged}
                     onKeyUp={this.onKeyUp}/>
             </div>
         );
